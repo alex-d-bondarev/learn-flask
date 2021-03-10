@@ -21,8 +21,20 @@ pipenv install --ignore-pipfile
 
 ## Running
 
+### General
+
 ```bash
 pipenv shell
 # Have fun
+exit
+```
+
+### Hello World
+
+```bash
+pipenv shell
+export FLASK_APP=hello.py
+flask run
+# CTRL+C
 exit
 ```

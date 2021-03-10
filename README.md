@@ -11,6 +11,8 @@ pipenv --python 3.9.1 install
 
 ```bash
 pipenv install [package names]
+# if "Locking Failed!":
+pipenv lock --pre --clear
 ```
 
 ### Install from `Pipfile.lock`
@@ -19,21 +21,29 @@ pipenv install [package names]
 pipenv install --ignore-pipfile
 ```
 
-## Running
+## Code style
 
-### General
+(Credit to https://sourcery.ai/blog/python-best-practices/)
 
 ```bash
-pipenv shell
-# Have fun
-exit
+pipenv run black
+pipenv run isort .
+pipenv run flake8
 ```
 
-### Hello World
+## Testing
+
+```bash
+PYTHONPATH=. pipenv run pytest --cov
+# Fail when coverage is low
+PYTHONPATH=. pipenv run pytest --cov --cov-fail-under=100
+```
+
+## Running
 
 ```bash
 pipenv shell
-FLASK_APP=hello.py FLASK_ENV=development flask run
+FLASK_APP=flaskr FLASK_ENV=development flask run
 # CTRL+C
 exit
 ```

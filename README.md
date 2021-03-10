@@ -18,3 +18,11 @@ pipenv install [package names]
 ```bash
 pipenv install --ignore-pipfile
 ```
+
+## Running
+
+```bash
+pipenv shell
+# Have fun
+exit
+```

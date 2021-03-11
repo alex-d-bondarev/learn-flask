@@ -20,7 +20,7 @@ def about():
 
 
 @app.route('/print/<text>')
-def show_user_profile(text):
+def print_text(text):
     return 'Given text %s' % escape(text)
 
 

@@ -1,5 +1,8 @@
 from flask import Flask, request
 from markupsafe import escape
+from logging.config import fileConfig
+
+fileConfig('logging.cfg')
 
 app = Flask(__name__)
 
@@ -27,6 +30,7 @@ def print_text(text):
 @app.route('/translate')
 def translate_http_code():
     http_code = request.args.get('http_code')
+    app.logger.info(f'Processing http code {http_code}')
     return 'Given http code is %s' % escape(http_code)
 
 

@@ -43,7 +43,7 @@ PYTHONPATH=. pipenv run pytest --cov --cov-fail-under=100
 
 ```bash
 pipenv shell
-FLASK_APP=flaskr FLASK_ENV=development flask run
+FLASK_APP=learn_app/simple_app.py FLASK_ENV=development flask run
 # CTRL+C
 exit
 ```

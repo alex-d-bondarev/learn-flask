@@ -34,9 +34,11 @@ pipenv run flake8
 ## Testing
 
 ```bash
-PYTHONPATH=. pipenv run pytest --cov
+# Generate coverage in htmlcov folder
+PYTHONPATH=`pwd` pipenv run pytest --cov=learn_app --cov-report html
 # Fail when coverage is low
-PYTHONPATH=. pipenv run pytest --cov --cov-fail-under=100
+PYTHONPATH=`pwd` pipenv run pytest --cov=learn_app --cov-report html --cov-fail-under=100
+exit
 ```
 
 ## Running

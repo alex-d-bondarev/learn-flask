@@ -1,88 +1,80 @@
-import datetime
-import time
+"""
+Application entry point
+"""
 
-from flask import Flask, request, g
-from markupsafe import escape
+import datetime
 from logging.config import fileConfig
 
-from rfc3339 import rfc3339
+from flask import Flask, g, request
+from markupsafe import escape
 
-fileConfig('logging.cfg')
+from learn_app.request_logger import log_request_details
 
+fileConfig("logging.cfg")
 app = Flask(__name__)
 
 
 @app.before_request
 def start_timer():
+    """Start timer for request logger"""
     g.start = datetime.datetime.now()
 
 
 @app.after_request
 def log_request(response):
-    """Log request. Credit to
-    https://dev.to/rhymes/logging-flask-requests-with-colors-and-structure--7g1
+    """Log request.
 
     :param response:
     :return:
     """
-    if request.path == '/favicon.ico':
-        return response
-
-    now = datetime.datetime.now()
-    duration = now - g.start
-    timestamp = rfc3339(now, utc=True)
-
-    ip = request.headers.get('X-Forwarded-For', request.remote_addr)
-    host = request.host.split(':', 1)[0]
-    args = dict(request.args)
-
-    log_params = [
-        ('method', request.method),
-        ('path', request.path),
-        ('status', response.status_code),
-        ('duration', duration),
-        ('time', timestamp),
-        ('ip', ip),
-        ('host', host),
-        ('params', args)
-    ]
-
-    line_items = []
-    for name, value in log_params:
-        item = f'{name}={value}'
-        line_items.append(item)
-    line = " ".join(line_items)
-
-    app.logger.info(line)
-
+    log_request_details(app, response)
     return response
 
 
-@app.route('/')
+@app.route("/")
 def index():
-    return 'Index Page'
+    """Default url
+    :return:
+    """
+    return "Index Page"
 
 
-@app.route('/hello')
+@app.route("/hello")
 def hello():
-    return 'Hello, World!'
+    """Self evident
+
+    :return:
+    """
+    return "Hello, World!"
 
 
-@app.route('/about')
+@app.route("/about")
 def about():
-    return 'The about page'
+    """Self evident
+
+    :return:
+    """
+    return "The about page"
 
 
-@app.route('/print/<text>')
+@app.route("/print/<text>")
 def print_text(text):
-    return 'Given text %s' % escape(text)
+    """Print given text
+
+    :return:
+    """
+    return "Given text %s" % escape(text)
 
 
-@app.route('/translate')
+@app.route("/translate")
 def translate_http_code():
-    http_code = request.args.get('http_code')
-    app.logger.info(f'Processing http code {http_code}')
-    return 'Given http code is %s' % escape(http_code)
+    """Print given code
+
+    :return:
+    """
+    http_code = request.args.get("http_code")
+    app.logger.info(f"Processing http code {http_code}")
+    return "Given http code is %s" % escape(http_code)
 
 
 if __name__ == "__main__":

@@ -28,9 +28,9 @@ pipenv install --ignore-pipfile
 (Credit to https://sourcery.ai/blog/python-best-practices/)
 
 ```bash
-pipenv run black
+PIPENV_IGNORE_VIRTUALENVS=1 pipenv run black .
 PIPENV_IGNORE_VIRTUALENVS=1 pipenv run isort .
-PIPENV_IGNORE_VIRTUALENVS=1 pipenv run flake8
+PIPENV_IGNORE_VIRTUALENVS=1 pipenv run flake8 .
 ```
 
 ## Testing

@@ -28,18 +28,18 @@ def test_about(client):
 @pytest.mark.usefixtures("client")
 def test_print_text(client):
     test_text = "unit_test"
-    response = client.get(f'/print/{test_text}', content_type="html/text")
+    response = client.get(f"/print/{test_text}", content_type="html/text")
 
     assert response.status_code == 200
-    assert response.data.decode("utf-8") == f'Given text {test_text}'
+    assert response.data.decode("utf-8") == f"Given text {test_text}"
 
 
 @pytest.mark.usefixtures("client")
 def test_translate_http_code(client):
     test_code = "200"
-    response = client.get("/translate",
-                          query_string=dict(http_code=test_code),
-                          content_type="html/text")
+    response = client.get(
+        "/translate", query_string=dict(http_code=test_code), content_type="html/text"
+    )
 
     assert response.status_code == 200
-    assert response.data.decode("utf-8") == f'Given http code is {test_code}'
+    assert response.data.decode("utf-8") == f"Given http code is {test_code}"

@@ -47,7 +47,7 @@ exit
 
 ```bash
 pipenv shell
-FLASK_APP=learn_app/simple_app.py FLASK_ENV=development flask run
+flask run
 # CTRL+C
 exit
 ```

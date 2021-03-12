@@ -5,6 +5,8 @@ name = "pypi"
 
 [packages]
 flask = "*"
+rfc3339 = "*"
+python-dotenv = "*"
 
 [dev-packages]
 black = "*"

@@ -4,6 +4,9 @@ Request logger
 import datetime
 
 from flask import g, request
+from logging.config import fileConfig
+
+fileConfig("logging.cfg")
 
 
 def log_request_details(app, response):

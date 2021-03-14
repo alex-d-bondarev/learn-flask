@@ -40,6 +40,7 @@ PIPENV_IGNORE_VIRTUALENVS=1 pipenv run flake8 .
 PYTHONPATH=`pwd` pipenv run pytest --cov --cov-report html
 # Fail when coverage is low
 PYTHONPATH=`pwd` pipenv run pytest --cov --cov-report html --cov-fail-under=100
+# See coverage_html_report/index.html for coverage details
 exit
 ```
 

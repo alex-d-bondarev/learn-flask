@@ -2,9 +2,9 @@
 Request logger
 """
 import datetime
+from logging.config import fileConfig
 
 from flask import g, request
-from logging.config import fileConfig
 
 fileConfig("logging.cfg")
 

@@ -8,7 +8,7 @@ from logging.config import fileConfig
 from flask import Flask, g, request
 from markupsafe import escape
 
-from learn_app.http_code_response import make_http_code_response
+from learn_app.http_code_response import make_http_code_response_with_status
 from learn_app.request_logger import log_request_details
 
 fileConfig("logging.cfg")
@@ -73,9 +73,12 @@ def translate_http_code():
 
     :return:
     """
-    http_code = request.args.get("http_code")
+    http_code = escape(request.args.get("http_code"))
     app.logger.info(f"Processing http code {http_code}")
-    return make_http_code_response(http_code)
+    json_body, http_status = make_http_code_response_with_status(http_code)
+    return app.response_class(
+        response=json_body, status=http_status, mimetype="application/json"
+    )
 
 
 if __name__ == "__main__":

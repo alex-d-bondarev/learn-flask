@@ -7,10 +7,11 @@ See [MIT license](https://opensource.org/licenses/MIT) for more details.
 
 ## Install
 
+Ensure pyenv is installed. 
+In this case pipenv will be able to install required python version automatically.
+
 ```bash
-pyenv global 3.9.1
-pipenv --python 3.9.1 install
-pipenv install --ignore-pipfile
+PIPENV_YES=true pipenv install
 ```
 
 ## Run

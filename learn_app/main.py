@@ -9,7 +9,7 @@ from flask import Flask, g, request
 from markupsafe import escape
 
 from learn_app.http_code_response import make_http_code_response_with_status
-from learn_app.request_logger import log_request_details
+from learn_app.request_logger import RequestLogger
 
 fileConfig("logging.cfg")
 app = Flask(__name__)
@@ -28,7 +28,7 @@ def log_request(response):
     :param response:
     :return:
     """
-    log_request_details(app, response)
+    RequestLogger().log_request_details(app, response)
     return response
 
 

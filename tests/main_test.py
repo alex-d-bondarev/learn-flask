@@ -1,4 +1,4 @@
-"""Test simple_app.py"""
+"""Test main.py"""
 import pytest
 from flask import json
 

@@ -1,6 +1,6 @@
 import pytest
 
-from learn_app.simple_app import app
+from learn_app.main import app
 
 
 @pytest.fixture

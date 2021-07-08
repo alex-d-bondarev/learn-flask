@@ -1,7 +1,20 @@
 """Create response for http code"""
 from http.client import responses
 
-from flask import json, jsonify
+from flask import json, jsonify, request
+from markupsafe import escape
+
+
+def make_http_code_translation(app):
+    """
+    :return: http name of the requested http code
+    """
+    http_code = escape(request.args.get("http_code"))
+    app.logger.info(f"Processing http code {http_code}")
+    json_body, http_status = make_http_code_response_with_status(http_code)
+    return app.response_class(
+        response=json_body, status=http_status, mimetype="application/json"
+    )
 
 
 def make_http_code_response_with_status(http_code):

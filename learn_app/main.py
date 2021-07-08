@@ -5,10 +5,10 @@ Application entry point
 import datetime
 from logging.config import fileConfig
 
-from flask import Flask, g, request
+from flask import Flask, g
 from markupsafe import escape
 
-from learn_app.http_code_response import make_http_code_response_with_status
+from learn_app.http_code_response import make_http_code_translation
 from learn_app.request_logger import RequestLogger
 
 fileConfig("logging.cfg")
@@ -73,12 +73,7 @@ def translate_http_code():
 
     :return:
     """
-    http_code = escape(request.args.get("http_code"))
-    app.logger.info(f"Processing http code {http_code}")
-    json_body, http_status = make_http_code_response_with_status(http_code)
-    return app.response_class(
-        response=json_body, status=http_status, mimetype="application/json"
-    )
+    return make_http_code_translation(app)
 
 
 if __name__ == "__main__":

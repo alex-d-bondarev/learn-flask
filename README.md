@@ -7,6 +7,8 @@ See [MIT license](https://opensource.org/licenses/MIT) for more details.
 
 ## Install
 
+### Python
+
 Ensure pyenv is installed. 
 In this case pipenv will be able to install required python version automatically.
 
@@ -14,14 +16,29 @@ In this case pipenv will be able to install required python version automaticall
 PIPENV_YES=true pipenv install
 ```
 
+### MySQL
+
+1. Install docker
+1. Run `docker-compose up -d`
+1. Now you can connect to DB as:
+   ```
+   host=127.0.0.1
+   username=root
+   password=root_pass # from MYSQL_ROOT_PASSWORD in .env
+   port=3310          # from MYSQL_PORT_1 in .env
+   ```
+
+
 ## Run
 
 ```bash
+docker-compose up -d
 pipenv shell
 flask run
 # Open http://127.0.0.1:5000/
 # Press CTRL+C to stop
 exit
+docker-compose down
 ```
 
 ## Add/Update dependencies

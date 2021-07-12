@@ -11,8 +11,16 @@ from markupsafe import escape
 from learn_app.http_code_response import make_http_code_translation
 from learn_app.request_logger import RequestLogger
 
-fileConfig("logging.cfg")
-app = Flask(__name__)
+
+def init_app():
+    """Execute app initialization code"""
+    global app
+    fileConfig("logging.cfg")
+    app = Flask(__name__)
+    app.config.from_pyfile('config.py')
+
+
+init_app()
 
 
 @app.before_request

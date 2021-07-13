@@ -4,11 +4,14 @@ from http.client import responses
 from flask import json, jsonify, request
 from markupsafe import escape
 
+from learn_app import init_app
 
-def make_http_code_translation(app):
+
+def make_http_code_translation():
     """
     :return: http name of the requested http code
     """
+    app, _ = init_app()
     http_code = escape(request.args.get("http_code"))
     app.logger.info(f"Processing http code {http_code}")
     json_body, http_status = make_http_code_response_with_status(http_code)

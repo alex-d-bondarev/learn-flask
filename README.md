@@ -47,8 +47,6 @@ docker-compose down
 pipenv install [package names]
 # if "Locking Failed!":
 pipenv lock --pre --clear
-# In the end ensure everything went fine
-pipenv check
 ```
 
 ## Check/Fix code style

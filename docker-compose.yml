@@ -5,10 +5,10 @@ services:
     container_name: flask-mysql
     image: mysql:8.0.25
     environment:
-      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
-      MYSQL_DATABASE: "${MYSQL_DATABASE}"
+      MYSQL_ROOT_PASSWORD: "${DB_PASSWORD}"
+      MYSQL_DATABASE: "${DB_NAME}"
     volumes:
       - ${MYSQL_VOLUME}:/var/lib/mysql
     ports:
-      - "${MYSQL_PORT_1}:3306"
-      - "${MYSQL_PORT_2}:33060"
+      - "${DB_HOST}:${DB_PORT_1}:3306"
+      - "${DB_HOST}:${DB_PORT_2}:33060"

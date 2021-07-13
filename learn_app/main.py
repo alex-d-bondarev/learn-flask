@@ -3,24 +3,15 @@ Application entry point
 """
 
 import datetime
-from logging.config import fileConfig
 
-from flask import Flask, g
+from flask import g
 from markupsafe import escape
 
+from learn_app import init_app
 from learn_app.http_code_response import make_http_code_translation
 from learn_app.request_logger import RequestLogger
 
-
-def init_app():
-    """Execute app initialization code"""
-    global app
-    fileConfig("logging.cfg")
-    app = Flask(__name__)
-    app.config.from_pyfile('config.py')
-
-
-init_app()
+app, db = init_app()
 
 
 @app.before_request
@@ -81,7 +72,7 @@ def translate_http_code():
 
     :return:
     """
-    return make_http_code_translation(app)
+    return make_http_code_translation()
 
 
 if __name__ == "__main__":

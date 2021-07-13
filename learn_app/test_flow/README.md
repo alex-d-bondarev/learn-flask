@@ -5,7 +5,7 @@ functionality should:
 
 1. _Require DB integration_ :hourglass_flowing_sand:
     1. Create docker-compose with mysql :white_check_mark:
-    1. _Add SQLAlchemy integration_ :hourglass_flowing_sand:
+    1. Add SQLAlchemy integration :white_check_mark:
     1. _Create 'demo' record for each entity (bellow) during app start up_
 1. _Simulate CRUD for generic accounts_
     1. _Account should consist of:_

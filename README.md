@@ -68,4 +68,6 @@ PYTHONPATH=`pwd` pipenv run pytest
 PYTHONPATH=`pwd` pipenv run pytest --cov --cov-report html
 # Fail when coverage is low
 PYTHONPATH=`pwd` pipenv run pytest --cov --cov-report html --cov-fail-under=100
+# or using make:
+make strict_test 
 ```

@@ -10,7 +10,7 @@ def test_account_model_creation(test_account_data):
             number=test_account_data["number"])
 
 
-@pytest.mark.usefixtures("test_account")
+@pytest.mark.usefixtures("test_account_data")
 def test_account_model_values(test_account_data):
     account = Account(id=test_account_data["id"],
                       name=test_account_data["name"],

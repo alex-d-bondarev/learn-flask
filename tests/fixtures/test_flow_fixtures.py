@@ -9,14 +9,12 @@ def test_account_data():
 
     :return:
     """
-    return {"id": 9999,
-            "name": "Mr. Test",
+    return {"name": "Mr. Test",
             "number": 42}
 
 
 @pytest.fixture
 @pytest.mark.usefixtures("test_account_data")
 def test_account(test_account_data):
-    return Account(id=test_account_data["id"],
-                   name=test_account_data["name"],
+    return Account(name=test_account_data["name"],
                    number=test_account_data["number"])

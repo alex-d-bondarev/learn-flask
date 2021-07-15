@@ -11,7 +11,7 @@ from learn_app import init_app
 from learn_app.http_code_response import make_http_code_translation
 from learn_app.request_logger import RequestLogger
 
-app, db = init_app()
+app = init_app()
 
 
 @app.before_request

@@ -11,7 +11,16 @@ def init_app():
     app = Flask(__name__)
     app.config.from_pyfile('config.py')
 
+    return app
+
+
+def init_app_with_db():
+    app = init_app()
+
     db = SQLAlchemy()
-    db.init_app(app)
+    # db.init_app(app)
+
+    # app.app_context().push()
+    # db.create_all()
 
     return app, db

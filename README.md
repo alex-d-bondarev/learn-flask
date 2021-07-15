@@ -61,13 +61,14 @@ PIPENV_IGNORE_VIRTUALENVS=1 pipenv run flake8 .
 
 ## Test
 
-```bash
-#Simply test
-PYTHONPATH=`pwd` pipenv run pytest
-# Test and get coverage. See generated coverage_html_report/index.html for coverage details
-PYTHONPATH=`pwd` pipenv run pytest --cov --cov-report html
-# Fail when coverage is low
-PYTHONPATH=`pwd` pipenv run pytest --cov --cov-report html --cov-fail-under=100
-# or using make:
-make strict_test 
-```
+1. Start DB `docker-compose up -d`
+1. Run tests:
+   ```bash
+   #Simply test
+   PYTHONPATH=`pwd` pipenv run pytest
+   # Test and get coverage. See generated coverage_html_report/index.html for coverage details
+   PYTHONPATH=`pwd` pipenv run pytest --cov --cov-report html
+   # Fail when coverage is bellow 100%
+   make strict_test 
+   ```
+1. Stop DB `docker-compose down`

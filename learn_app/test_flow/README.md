@@ -6,13 +6,13 @@ functionality should:
 1. _Require DB integration_ :hourglass_flowing_sand:
     1. Create docker-compose with mysql :white_check_mark:
     1. Add SQLAlchemy integration :white_check_mark:
-    1. _Create 'demo' record for each entity (bellow) during app start up_
+    1. _Create 'demo' record for each entity (bellow) during app start up_ :hourglass_flowing_sand:
 1. _Simulate CRUD for generic accounts_
-    1. _Account should consist of:_ :hourglass_flowing_sand:
+    1. _Account should consist of:_ :white_check_mark:
         1. id
         1. name - for text update actions
         1. number - for number update actions
-    1. _Account data should be stored in DB_
+    1. _Account data should be stored in DB_ :hourglass_flowing_sand:
 1. _Simulate CRUD for generic account roles_
     1. _Simulate admin with access to all endpoints_
     1. _Simulate user with limited access to endpoints_

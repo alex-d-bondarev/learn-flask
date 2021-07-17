@@ -10,13 +10,9 @@ Need to implement some generic functionality for test demo purposes. This functi
         1. id
         1. name - for text update actions
         1. number - for number update actions
+        1. role - for generic account roles admin|user :hourglass_flowing_sand:
     1. Account data should be stored in DB :white_check_mark:
     1. _Create CRUD API endpoint_ :hourglass_flowing_sand:
-1. _Simulate CRUD for generic account roles_ :hourglass_flowing_sand:
-    1. _Role should consist of:_
-        1. id
-        1. permission (admin|user)
-    1. _Create CRUD API endpoint_
 1. _Simulate generic actions (do_something) against accounts combined with roles_
     1. _Create `do_something_public` endpoint:_
         1. _It can be used without restrictions._

@@ -12,6 +12,11 @@ class Account(db.Model):
 
     number = db.Column(name="number", type_=db.Integer, unique=False, nullable=False)
 
-    def __init__(self, name, number):
+    role = db.Column(
+        name="role", type_=db.String(20), unique=False, nullable=False, default="none"
+    )
+
+    def __init__(self, name, number, role="none"):
         self.name = name
         self.number = number
+        self.role = role

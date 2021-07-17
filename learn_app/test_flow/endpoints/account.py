@@ -14,7 +14,11 @@ def get_account(name):
     :return:
     """
     db_account = query_account_by_name(name).first()
-    dict_account = {"name": db_account.name, "number": db_account.number}
+    dict_account = {
+        "name": db_account.name,
+        "number": db_account.number,
+        "role": db_account.role,
+    }
     json_body = json.dumps(dict_account)
     return app.response_class(
         response=json_body, status=200, mimetype="application/json"

@@ -88,3 +88,4 @@ def test_get_account_record(test_client, test_account_api_data):
     assert response.status_code == 200
     assert json_response["name"] == account_name
     assert json_response["number"] == test_account_api_data["number"]
+    assert json_response["role"] == test_account_api_data["role"]

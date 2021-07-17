@@ -1,6 +1,6 @@
 import pytest
 
-from learn_app.main import app
+from learn_app.main import app, db
 
 
 @pytest.fixture(scope="session")
@@ -19,3 +19,12 @@ def app_context():
     :return:
     """
     return app.app_context()
+
+
+@pytest.fixture(scope="session")
+def db_fixture():
+    """Get app context for tests
+
+    :return:
+    """
+    return db

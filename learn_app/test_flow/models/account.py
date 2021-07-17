@@ -1,11 +1,10 @@
-from learn_app import init_app_with_db
-
-_, db = init_app_with_db()
+from learn_app import db
 
 
 class Account(db.Model):
     """Account CRUD"""
     __tablename__ = 'accounts'
+
     id = db.Column(name="id",
                    type_=db.Integer,
                    primary_key=True,

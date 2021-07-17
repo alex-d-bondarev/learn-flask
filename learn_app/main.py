@@ -7,11 +7,11 @@ import datetime
 from flask import g
 from markupsafe import escape
 
-from learn_app import init_app_with_db
+from learn_app import init_app
 from learn_app.http_code_response import make_http_code_translation
 from learn_app.request_logger import RequestLogger
 
-app, db = init_app_with_db()
+app, db = init_app()
 
 
 @app.before_request
@@ -72,7 +72,7 @@ def translate_http_code():
 
     :return:
     """
-    return make_http_code_translation()
+    return make_http_code_translation(app)
 
 
 if __name__ == "__main__":

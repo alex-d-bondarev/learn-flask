@@ -1,7 +1,24 @@
+"""Account API"""
+import json
+
 from flask import request
 
 from learn_app.main import app, db
 from learn_app.test_flow.models.account import Account
+
+
+@app.route("/account/<name>")
+def get_account(name):
+    """Get account with given name as json
+
+    :return:
+    """
+    db_account = query_account_by_name(name).first()
+    dict_account = {"name": db_account.name, "number": db_account.number}
+    json_body = json.dumps(dict_account)
+    return app.response_class(
+        response=json_body, status=200, mimetype="application/json"
+    )
 
 
 @app.route("/account", methods=["DELETE", "POST", "PUT"])
@@ -23,7 +40,7 @@ def delete_account(req_form):
     :param req_form:
     :return:
     """
-    Account.query.filter_by(name=req_form.get("name")).delete()
+    query_account_by_name(req_form.get("name")).delete()
     return make_record_change()
 
 
@@ -42,9 +59,18 @@ def update_existing_account(req_form):
     :param req_form:
     :return:
     """
-    updated_account = Account.query.filter_by(name=req_form.get("name")).first()
+    updated_account = query_account_by_name(req_form.get("name")).first()
     updated_account.number = req_form.get("number")
     return make_record_change()
+
+
+def query_account_by_name(name):
+    """Make an Account DB query and filter by given name
+
+    :param name:
+    :return:
+    """
+    return Account.query.filter_by(name=name)
 
 
 def create_new_account(req_form):

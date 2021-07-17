@@ -27,9 +27,9 @@ def test_account(test_account_data):
     return Account(name=test_account_data["name"], number=test_account_data["number"])
 
 
-@pytest.fixture(scope="session", autouse=True)
+@pytest.fixture(scope="function", autouse=True)
 @pytest.mark.usefixtures("db_fixture", "test_account")
 def cleanup_test_account(db_fixture, test_account):
     yield
-    db_fixture.session.delete(test_account)
+    Account.query.delete()
     db_fixture.session.commit()

@@ -23,6 +23,7 @@ def test_account_saved_to_db(db_fixture, test_account):
     db_fixture.session.add(test_account)
     db_fixture.session.commit()
     db_accounts = Account.query.filter_by(name=test_account.name).all()
+
     assert len(db_accounts) == 1
 
 
@@ -37,7 +38,18 @@ def test_account_patch_not_allowed(test_client, test_account_api_data):
 def test_account_post_new_record(test_client, test_account_api_data):
     response = test_client.post("/account", data=test_account_api_data)
     db_accounts = Account.query.filter_by(name=test_account_api_data["name"]).all()
-    Account.query.filter_by(name=test_account_api_data["name"]).delete()
 
     assert response.status_code == 201
     assert len(db_accounts) == 1
+
+
+@pytest.mark.usefixtures("test_client", "test_account_api_data")
+def test_account_update_record(test_client, test_account_api_data):
+    new_number = 99
+    test_client.post("/account", data=test_account_api_data)
+    test_account_api_data["number"] = new_number
+    response = test_client.put("/account", data=test_account_api_data)
+    db_account = Account.query.filter_by(name=test_account_api_data["name"]).first()
+
+    assert response.status_code == 204
+    assert db_account.number == new_number

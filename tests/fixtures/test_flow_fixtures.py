@@ -1,9 +1,10 @@
 import pytest
 
 from learn_app.test_flow.account import Account
+from learn_app.main import app, db
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 def test_account_data():
     """Get app context for tests
 
@@ -13,7 +14,7 @@ def test_account_data():
             "number": 42}
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 @pytest.mark.usefixtures("test_account_data")
 def test_account(test_account_data):
     return Account(name=test_account_data["name"],

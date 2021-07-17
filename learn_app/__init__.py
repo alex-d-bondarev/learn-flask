@@ -10,7 +10,7 @@ app = Flask(__name__)
 
 def init_app():
     """Execute app initialization code"""
-    app.config.from_pyfile('config.py')
+    app.config.from_pyfile("config.py")
     init_db()
 
     return app, db
@@ -26,5 +26,6 @@ def init_db():
 def init_db_tables():
     """Create tables based on imported models"""
     from learn_app.test_flow.models.account import Account
+
     db.create_all()
     db.session.commit()

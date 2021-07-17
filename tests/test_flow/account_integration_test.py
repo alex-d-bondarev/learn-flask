@@ -57,15 +57,27 @@ def test_account_post_new_record(test_client, test_account_api_data):
 
 
 @pytest.mark.usefixtures("test_client", "test_account_api_data")
-def test_account_update_record(test_client, test_account_api_data):
+def test_account_update_number(test_client, test_account_api_data):
     new_number = 99
+    update_data = {"number": new_number, "name": test_account_api_data["name"]}
     create_account(test_account_api_data, test_client)
-    test_account_api_data["number"] = new_number
-    response = test_client.put("/account", data=test_account_api_data)
+    response = test_client.put("/account", data=update_data)
     db_account = Account.query.filter_by(name=test_account_api_data["name"]).first()
 
     assert response.status_code == 204
     assert db_account.number == new_number
+
+
+@pytest.mark.usefixtures("test_client", "test_account_api_data")
+def test_account_update_role(test_client, test_account_api_data):
+    new_role = "admin"
+    update_data = {"role": new_role, "name": test_account_api_data["name"]}
+    create_account(test_account_api_data, test_client)
+    response = test_client.put("/account", data=update_data)
+    db_account = Account.query.filter_by(name=test_account_api_data["name"]).first()
+
+    assert response.status_code == 204
+    assert db_account.role == new_role
 
 
 @pytest.mark.usefixtures("test_client", "test_account_api_data")

@@ -64,7 +64,10 @@ def update_existing_account(req_form):
     :return:
     """
     updated_account = query_account_by_name(req_form.get("name")).first()
-    updated_account.number = req_form.get("number")
+    if req_form.get("number") is not None:
+        updated_account.number = req_form.get("number")
+    if req_form.get("role") is not None:
+        updated_account.role = req_form.get("role")
     return make_record_change()
 
 

@@ -27,8 +27,8 @@ def test_account_saved_to_db(db_fixture, test_account):
 
 
 @pytest.mark.usefixtures("test_client", "test_account_api_data")
-def test_account_put_not_allowed(test_client, test_account_api_data):
-    response = test_client.put("/account", data=test_account_api_data)
+def test_account_patch_not_allowed(test_client, test_account_api_data):
+    response = test_client.patch("/account", data=test_account_api_data)
 
     assert response.status_code == 405
 

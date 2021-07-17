@@ -1,5 +1,4 @@
 import pytest
-from flask import json
 
 from learn_app.test_flow.models.account import Account
 
@@ -37,4 +36,8 @@ def test_account_put_not_allowed(test_client, test_account_api_data):
 @pytest.mark.usefixtures("test_client", "test_account_api_data")
 def test_account_post_new_record(test_client, test_account_api_data):
     response = test_client.post("/account", data=test_account_api_data)
+    db_accounts = Account.query.filter_by(name=test_account_api_data["name"]).all()
+    Account.query.filter_by(name=test_account_api_data["name"]).delete()
+
     assert response.status_code == 201
+    assert len(db_accounts) == 1

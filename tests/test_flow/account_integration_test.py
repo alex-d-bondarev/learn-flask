@@ -3,6 +3,17 @@ import pytest
 from learn_app.test_flow.models.account import Account
 
 
+def create_account(test_account_api_data, test_client):
+    """Create account using given data and client
+
+    :param test_account_api_data:
+    :param test_client:
+    :return:
+    """
+    response = test_client.post("/account", data=test_account_api_data)
+    return response
+
+
 @pytest.mark.usefixtures("test_account_data")
 def test_account_model_creation(test_account_data):
     Account(name=test_account_data["name"], number=test_account_data["number"])
@@ -36,7 +47,7 @@ def test_account_patch_not_allowed(test_client, test_account_api_data):
 
 @pytest.mark.usefixtures("test_client", "test_account_api_data")
 def test_account_post_new_record(test_client, test_account_api_data):
-    response = test_client.post("/account", data=test_account_api_data)
+    response = create_account(test_account_api_data, test_client)
     db_accounts = Account.query.filter_by(name=test_account_api_data["name"]).all()
 
     assert response.status_code == 201
@@ -46,10 +57,20 @@ def test_account_post_new_record(test_client, test_account_api_data):
 @pytest.mark.usefixtures("test_client", "test_account_api_data")
 def test_account_update_record(test_client, test_account_api_data):
     new_number = 99
-    test_client.post("/account", data=test_account_api_data)
+    create_account(test_account_api_data, test_client)
     test_account_api_data["number"] = new_number
     response = test_client.put("/account", data=test_account_api_data)
     db_account = Account.query.filter_by(name=test_account_api_data["name"]).first()
 
     assert response.status_code == 204
     assert db_account.number == new_number
+
+
+@pytest.mark.usefixtures("test_client", "test_account_api_data")
+def test_account_delete_record(test_client, test_account_api_data):
+    create_account(test_account_api_data, test_client)
+    response = test_client.delete("/account", data=test_account_api_data)
+    db_accounts = Account.query.filter_by(name=test_account_api_data["name"]).all()
+
+    assert response.status_code == 204
+    assert len(db_accounts) == 0

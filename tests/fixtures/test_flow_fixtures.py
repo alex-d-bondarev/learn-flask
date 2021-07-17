@@ -13,6 +13,15 @@ def test_account_data():
 
 
 @pytest.fixture(scope="session")
+def test_account_api_data():
+    """Get app context for tests
+
+    :return:
+    """
+    return {"name": "Mr. API", "number": 42}
+
+
+@pytest.fixture(scope="session")
 @pytest.mark.usefixtures("test_account_data")
 def test_account(test_account_data):
     return Account(name=test_account_data["name"], number=test_account_data["number"])

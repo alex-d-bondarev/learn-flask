@@ -33,11 +33,9 @@ PIPENV_YES=true pipenv install
 
 ```bash
 docker-compose up -d
-pipenv shell
-flask run
+make run
 # Open http://127.0.0.1:5000/
 # Press CTRL+C to stop
-exit
 docker-compose down
 ```
 
@@ -53,10 +51,9 @@ pipenv lock --pre --clear
 
 (Credit to https://sourcery.ai/blog/python-best-practices/)
 
+Run python black, isort and flake8 in order to improve code style:
 ```bash
-PIPENV_IGNORE_VIRTUALENVS=1 pipenv run black .
-PIPENV_IGNORE_VIRTUALENVS=1 pipenv run isort .
-PIPENV_IGNORE_VIRTUALENVS=1 pipenv run flake8 .
+make code_style
 ```
 
 ## Test
@@ -65,9 +62,9 @@ PIPENV_IGNORE_VIRTUALENVS=1 pipenv run flake8 .
 1. Run tests:
    ```bash
    #Simply test
-   PYTHONPATH=`pwd` pipenv run pytest
+   make test
    # Test and get coverage. See generated coverage_html_report/index.html for coverage details
-   PYTHONPATH=`pwd` pipenv run pytest --cov --cov-report html
+   make coverage_test 
    # Fail when coverage is bellow 100%
    make strict_test 
    ```

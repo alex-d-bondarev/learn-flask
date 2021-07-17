@@ -1,20 +1,22 @@
 # plan
 
-Need to implement some generic functionality for test demo purposes. This
-functionality should:
+Need to implement some generic functionality for test demo purposes. This functionality should:
 
 1. _Require DB integration_ :hourglass_flowing_sand:
     1. Create docker-compose with mysql :white_check_mark:
     1. Add SQLAlchemy integration :white_check_mark:
-1. Simulate CRUD for generic accounts
+1. _Simulate CRUD for generic accounts_ :hourglass_flowing_sand:
     1. Account should consist of: :white_check_mark:
         1. id
         1. name - for text update actions
         1. number - for number update actions
     1. Account data should be stored in DB :white_check_mark:
+    1. _Create CRUD API endpoint_ :hourglass_flowing_sand:
 1. _Simulate CRUD for generic account roles_ :hourglass_flowing_sand:
-    1. _Simulate admin with access to all endpoints_
-    1. _Simulate user with limited access to endpoints_
+    1. _Role should consist of:_
+        1. id
+        1. permission (admin|user)
+    1. _Create CRUD API endpoint_
 1. _Simulate generic actions (do_something) against accounts combined with roles_
     1. _Create `do_something_public` endpoint:_
         1. _It can be used without restrictions._
@@ -24,8 +26,8 @@ functionality should:
         1. _It can be used only by users and admins._
         1. _Account id parameter as input._
         1. _A short response with response ID is returned immediately._
-        1. _A full response with 'processing delay' is returned, when additional
-           response ID is provided._
+        1. _A full response with 'processing delay' is returned, when additional response ID is
+           provided._
     1. _Create `do_something_admin` endpoint:_
         1. _Same as `do_something_private` but only for admins_
 1. _Simulate CRUD for processing delays_

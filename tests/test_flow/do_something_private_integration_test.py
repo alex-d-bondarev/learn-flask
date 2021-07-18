@@ -88,3 +88,12 @@ def test_do_something_returns_id(create_admin_account, test_client):
 
     assert db_do_something is not None
     assert json_response["status"] == "processing"
+
+
+@pytest.mark.usefixtures("test_client")
+def test_get_do_something_with_incorrect_id(test_client):
+    response = test_client.get("/do_something_private/0")
+    json_response = json.loads(response.data)
+
+    assert response.status_code == 404
+    assert json_response["message"] == "Process Not Found"

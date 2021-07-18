@@ -7,6 +7,17 @@ from learn_app.test_flow.models.account import Account
 from learn_app.test_flow.models.do_something import DoSomething
 
 
+@app.route("/do_something_private/<id>")
+def get_do_something_private(id):
+    """Get account with given name as json
+
+    :return:
+    """
+    response = {"message": "Process Not Found"}
+    json_response = json.dumps(response)
+    return app.response_class(response=json_response, status=404)
+
+
 @app.route("/do_something_private", methods=["POST"])
 def do_something_private():
     """Simulate some processing on backend

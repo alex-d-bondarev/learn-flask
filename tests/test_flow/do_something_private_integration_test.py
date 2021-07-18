@@ -87,11 +87,10 @@ def test_do_something_is_saved_to_db(create_admin_account, test_client):
 
 @pytest.mark.usefixtures("create_admin_account", "test_client")
 def test_do_something_returns_id(create_admin_account, test_client):
-    json_response, process_id = _make_json_response_and_process_id_from_post(create_admin_account,
-                                                                             test_client)
-    db_do_something = DoSomething.query.filter_by(
-        id=process_id
-    ).first()
+    json_response, process_id = _make_json_response_and_process_id_from_post(
+        create_admin_account, test_client
+    )
+    db_do_something = DoSomething.query.filter_by(id=process_id).first()
 
     assert db_do_something is not None
     assert json_response["status"] == "processing"
@@ -108,38 +107,42 @@ def test_get_do_something_with_incorrect_id(test_client):
 
 @pytest.mark.usefixtures("create_admin_account", "test_client")
 def test_get_do_something_with_correct_id(create_admin_account, test_client):
-    json_response, process_id = _make_json_response_and_process_id_from_post(create_admin_account,
-                                                                             test_client)
-    get_response = test_client.get(
-        f'/do_something_private/{process_id}'
+    json_response, process_id = _make_json_response_and_process_id_from_post(
+        create_admin_account, test_client
     )
+    get_response = test_client.get(f"/do_something_private/{process_id}")
 
     assert get_response.status_code == 200
 
 
 @pytest.mark.usefixtures("create_admin_account", "test_client")
-def test_do_something_has_different_delta_for_default(create_admin_account, test_client):
+def test_do_something_has_different_delta_for_default(
+    create_admin_account, test_client
+):
     one_second = timedelta(seconds=1)
 
     time_delta_1 = _calculate_time_delta_between_now_and_db_record(
-        create_admin_account,
-        test_client)
+        create_admin_account, test_client
+    )
     time_delta_2 = _calculate_time_delta_between_now_and_db_record(
-        create_admin_account,
-        test_client)
+        create_admin_account, test_client
+    )
     time_delta_3 = _calculate_time_delta_between_now_and_db_record(
-        create_admin_account,
-        test_client)
+        create_admin_account, test_client
+    )
 
-    assert time_delta_1 > one_second \
-           or time_delta_1 > one_second \
-           or time_delta_3 > one_second
+    assert (
+        time_delta_1 > one_second
+        or time_delta_2 > one_second
+        or time_delta_3 > one_second
+    )
 
 
 def _calculate_time_delta_between_now_and_db_record(create_admin_account, test_client):
     test_datetime = _make_utc_datetime_now_without_milliseconds()
-    json_response, process_id = _make_json_response_and_process_id_from_post(create_admin_account,
-                                                                             test_client)
+    json_response, process_id = _make_json_response_and_process_id_from_post(
+        create_admin_account, test_client
+    )
     db_datetime = _query_by_time_from_db(process_id)
     return db_datetime - test_datetime
 

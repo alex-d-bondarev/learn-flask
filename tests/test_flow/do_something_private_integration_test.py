@@ -71,6 +71,20 @@ def test_user_admin_is_accepted(create_admin_account, test_client):
 @pytest.mark.usefixtures("create_admin_account", "test_client")
 def test_do_something_is_saved_to_db(create_admin_account, test_client):
     _post_do_something_for_account(create_admin_account, test_client)
-    db_do_something = DoSomething.query.filter_by(by_name=create_admin_account.name).first()
+    db_do_something = DoSomething.query.filter_by(
+        by_name=create_admin_account.name
+    ).first()
 
     assert db_do_something is not None
+
+
+@pytest.mark.usefixtures("create_admin_account", "test_client")
+def test_do_something_returns_id(create_admin_account, test_client):
+    response = _post_do_something_for_account(create_admin_account, test_client)
+    json_response = json.loads(response.data)
+    db_do_something = DoSomething.query.filter_by(
+        id=json_response["process_id"]
+    ).first()
+
+    assert db_do_something is not None
+    assert json_response["status"] == "processing"

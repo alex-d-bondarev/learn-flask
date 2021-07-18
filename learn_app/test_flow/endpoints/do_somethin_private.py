@@ -37,14 +37,20 @@ def _respond_account_found(account):
 
 
 def _respond_do_something_successfully(account):
-    _save_do_something_to_db(account)
-    return app.response_class(status=202)
+    process_id = _save_do_something_to_db(account)
+    response = {
+        "status": "processing",
+        "process_id": process_id,
+    }
+    json_response = json.dumps(response)
+    return app.response_class(response=json_response, status=202)
 
 
 def _save_do_something_to_db(account):
     do_something = DoSomething(by_name=account.name, by_time=datetime.utcnow())
     db.session.add(do_something)
     db.session.commit()
+    return do_something.id
 
 
 def _respond_not_enough_permissions():

@@ -13,6 +13,19 @@ def get_do_something_private(id):
 
     :return:
     """
+    db_do_something = DoSomething.query.filter_by(id=id).first()
+
+    if db_do_something is None:
+        return _respond_get_not_found()
+    else:
+        return _respond_get_found()
+
+
+def _respond_get_found():
+    return app.response_class(status=200)
+
+
+def _respond_get_not_found():
     response = {"message": "Process Not Found"}
     json_response = json.dumps(response)
     return app.response_class(response=json_response, status=404)

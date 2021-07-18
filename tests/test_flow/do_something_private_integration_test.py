@@ -97,3 +97,14 @@ def test_get_do_something_with_incorrect_id(test_client):
 
     assert response.status_code == 404
     assert json_response["message"] == "Process Not Found"
+
+
+@pytest.mark.usefixtures("create_admin_account", "test_client")
+def test_get_do_something_with_correct_id(create_admin_account, test_client):
+    post_response = _post_do_something_for_account(create_admin_account, test_client)
+    json_response = json.loads(post_response.data)
+    get_response = test_client.get(
+        f'/do_something_private/{json_response["process_id"]}'
+    )
+
+    assert get_response.status_code == 200

@@ -18,12 +18,12 @@ Need to implement some generic functionality for test demo purposes. This functi
         1. _It can be used without restrictions._
         1. _No input parameters are required._
         1. _A full response is returned immediately._
-    1. _Create `do_something_private` endpoint:_ :hourglass_flowing_sand:
+    1. Create `do_something_private` endpoint: :white_check_mark:
         1. It can be used only by users and admins. :white_check_mark:
         1. Account name parameter as input. :white_check_mark:
         1. A short response with response ID is returned immediately. :white_check_mark:
-        1. _A full response with 'processing delay' is returned, when additional response ID is
-           provided._ :hourglass_flowing_sand:
+        1. A full response with 'processing delay' is returned, when additional response ID is
+           provided. :white_check_mark:
     1. _Create `do_something_admin` endpoint:_
         1. _Same as `do_something_private` but only for admins_
 1. _Simulate CRUD for processing delays_ :hourglass_flowing_sand:

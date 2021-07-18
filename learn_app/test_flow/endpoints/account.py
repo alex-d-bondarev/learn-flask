@@ -68,6 +68,7 @@ def update_existing_account(req_form):
         updated_account.number = req_form.get("number")
     if req_form.get("role") is not None:
         updated_account.role = req_form.get("role")
+    db.session.merge(updated_account)
     return make_record_change()
 
 
@@ -88,4 +89,5 @@ def create_new_account(req_form):
     """
     new_account = Account(name=req_form.get("name"), number=req_form.get("number"))
     db.session.add(new_account)
+    db.session.commit()
     return app.response_class(status=201)

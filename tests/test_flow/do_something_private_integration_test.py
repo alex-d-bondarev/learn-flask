@@ -177,3 +177,20 @@ def test_do_something_is_still_processing_when_future_by_time(db_fixture, test_c
     )
 
     assert json_response["status"] == "processing"
+
+
+@pytest.mark.usefixtures("db_fixture", "test_client")
+def test_do_something_is_done_when_past_by_time(db_fixture, test_client):
+    one_hour = timedelta(seconds=3600)
+
+    do_something = DoSomething(
+        by_name="Mr Hacker", by_time=datetime.utcnow() - one_hour
+    )
+    db_fixture.session.add(do_something)
+    db_fixture.session.commit()
+
+    json_response, _ = _response_and_json_from_get_do_something(
+        test_client, do_something.id
+    )
+
+    assert json_response["status"] == "done"

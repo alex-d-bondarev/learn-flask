@@ -29,9 +29,17 @@ def _respond_get_found(db_do_something):
 
 
 def _prepare_do_something_details_json(db_do_something):
-    response = {"by_time": db_do_something.by_time, "status": "processing"}
+    status = _calculate_status(db_do_something.by_time)
+    response = {"by_time": db_do_something.by_time, "status": status}
     json_response = json.dumps(response)
     return json_response
+
+
+def _calculate_status(db_time):
+    if datetime.utcnow().replace(microsecond=0) > db_time:
+        return "done"
+    else:
+        return "processing"
 
 
 def _respond_get_not_found():

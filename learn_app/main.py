@@ -35,6 +35,7 @@ from learn_app.endpoints import index  # noqa: E402, F401
 from learn_app.endpoints import print_text  # noqa: E402, F401
 from learn_app.endpoints import translate  # noqa: E402, F401
 from learn_app.test_flow.endpoints import account  # noqa: E402, F401
+from learn_app.test_flow.endpoints import delay  # noqa: E402, F401
 
 if __name__ == "__main__":
     app.run()

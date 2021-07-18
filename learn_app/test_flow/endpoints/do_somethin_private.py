@@ -12,8 +12,16 @@ def do_something_private():
     req_form = request.form
 
     if req_form.get("by_name") is not None:
-        json_body = json.dumps({"message": "User Not Found"})
-        return app.response_class(response=json_body, status=404)
+        return _respond_with_by_name()
     else:
-        json_body = json.dumps({"message": "'by_name' parameter not found"})
-        return app.response_class(response=json_body, status=400)
+        return _respond_without_parameters()
+
+
+def _respond_with_by_name():
+    json_body = json.dumps({"message": "User Not Found"})
+    return app.response_class(response=json_body, status=404)
+
+
+def _respond_without_parameters():
+    json_body = json.dumps({"message": "'by_name' parameter not found"})
+    return app.response_class(response=json_body, status=400)

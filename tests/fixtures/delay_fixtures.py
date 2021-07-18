@@ -9,12 +9,11 @@ def test_delay(test_account_data):
 
 
 @pytest.fixture(scope="function", autouse=True)
-@pytest.mark.usefixtures("db_fixture", "test_delay")
-def cleanup_test_delay(db_fixture, test_account):
+@pytest.mark.usefixtures("db_fixture")
+def cleanup_test_delay(db_fixture):
     """Cleanup account table after each test
 
     :param db_fixture:
-    :param test_account:
     """
     yield
     Delay.query.delete()

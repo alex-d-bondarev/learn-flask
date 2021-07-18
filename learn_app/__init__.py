@@ -27,6 +27,7 @@ def init_db_tables():
     """Create tables based on imported models"""
     from learn_app.test_flow.models.account import Account  # noqa: F401
     from learn_app.test_flow.models.delay import Delay  # noqa: F401
+    from learn_app.test_flow.models.do_something import DoSomething  # noqa: F401
 
     db.create_all()
     db.session.commit()

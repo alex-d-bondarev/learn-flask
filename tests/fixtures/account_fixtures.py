@@ -32,12 +32,11 @@ def test_account(test_account_data):
 
 
 @pytest.fixture(scope="function", autouse=True)
-@pytest.mark.usefixtures("db_fixture", "test_account")
-def cleanup_test_account(db_fixture, test_account):
+@pytest.mark.usefixtures("db_fixture")
+def cleanup_test_account(db_fixture):
     """Cleanup account table after each test
 
     :param db_fixture:
-    :param test_account:
     """
     yield
     Account.query.delete()

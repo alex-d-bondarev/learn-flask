@@ -28,10 +28,10 @@ Need to implement some generic functionality for test demo purposes. This functi
         1. _Same as `do_something_private` but only for admins_
 1. _Simulate CRUD for processing delays_ :hourglass_flowing_sand:
     1. _Simulate processing delays by adding delays to endpoints_
-        1. _Add max_delay value_
-        1. _Add random delay True|False_
-            1. _If random delay is between 0 and max_delay_
-            1. _Else delay is max_delay_
+        1. Add max_delay value :white_check_mark:
+        1. Add random delay True|False :white_check_mark:
+            1. _If random delay is between 0 and max_delay_ :hourglass_flowing_sand:
+            1. _Else delay is max_delay_ :hourglass_flowing_sand:
 1. Use TDD :stuck_out_tongue_winking_eye:
 1. Update this README to show progress:
     1. _Italics_ = TBD

@@ -96,3 +96,14 @@ def test_update_delay_random_value(test_client, db_fixture):
     json_response = _get_delay_as_json(test_client)
     assert json_response["max_delay"] == DEFAULT_MAX_DELAY
     assert json_response["random"] == new_random
+
+
+@pytest.mark.usefixtures("test_client", "db_fixture")
+def test_there_is_always_only_1_delay_record(test_client, db_fixture):
+    _delete_all_delays_from_db(db_fixture)
+
+    test_client.put("/delay")
+    test_client.put("/delay")
+
+    db_delay = Delay.query.all()
+    assert len(db_delay) == 1

@@ -33,10 +33,15 @@ def _update_default_delay_based_on_request(default_delay):
 
 
 def _save_delay_to_db(default_delay):
-    new_delay = Delay(
-        max_delay=default_delay["max_delay"], random=default_delay["random"]
-    )
-    db.session.add(new_delay)
+    db_delay = Delay.query.first()
+    if db_delay is None:
+        db_delay = Delay(
+            max_delay=default_delay["max_delay"], random=default_delay["random"]
+        )
+    else:
+        db_delay.max_delay = default_delay["max_delay"]
+        db_delay.random = default_delay["random"]
+    db.session.merge(db_delay)
     db.session.commit()
 
 

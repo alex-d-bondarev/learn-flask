@@ -15,19 +15,34 @@ def do_something_private():
     if req_form.get("by_name") is not None:
         return _respond_with_by_name(req_form.get("by_name"))
     else:
-        return _respond_without_parameters()
+        return _respond_parameter_not_found()
 
 
 def _respond_with_by_name(name):
     account = Account.query.filter_by(name=name).first()
     if account is None:
-        json_body = json.dumps({"message": "User Not Found"})
-        return app.response_class(response=json_body, status=404)
+        return _respond_account_not_found()
     else:
-        json_body = json.dumps({"message": "Not enough permissions"})
-        return app.response_class(response=json_body, status=403)
+        return _respond_user_found(account)
 
 
-def _respond_without_parameters():
+def _respond_user_found(account):
+    if account.role in ["admin", "user"]:
+        return app.response_class(status=202)
+    else:
+        return _respond_not_enough_permissions()
+
+
+def _respond_not_enough_permissions():
+    json_body = json.dumps({"message": "Not enough permissions"})
+    return app.response_class(response=json_body, status=403)
+
+
+def _respond_account_not_found():
+    json_body = json.dumps({"message": "Account Not Found"})
+    return app.response_class(response=json_body, status=404)
+
+
+def _respond_parameter_not_found():
     json_body = json.dumps({"message": "'by_name' parameter not found"})
     return app.response_class(response=json_body, status=400)

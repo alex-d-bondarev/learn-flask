@@ -6,6 +6,12 @@ from flask import json
 from learn_app.test_flow.models.do_something import DoSomething
 
 
+def _post_do_something_for_account(account, test_client):
+    do_something_data = {"by_name": account.name}
+    response = test_client.post("/do_something_private", data=do_something_data)
+    return response
+
+
 def test_do_something_private_has_model():
     DoSomething(by_name="no one", by_time=datetime.utcnow())
 
@@ -36,14 +42,27 @@ def test_post_do_something_private_needs_user(test_client):
     json_response = json.loads(response.data)
 
     assert response.status_code == 404
-    assert json_response["message"] == "User Not Found"
+    assert json_response["message"] == "Account Not Found"
 
 
 @pytest.mark.usefixtures("create_none_account", "test_client")
 def test_account_exists_but_none_role_is_forbidden(create_none_account, test_client):
-    do_something_data = {"by_name": create_none_account.name}
-    response = test_client.post("/do_something_private", data=do_something_data)
+    response = _post_do_something_for_account(create_none_account, test_client)
     json_response = json.loads(response.data)
 
     assert response.status_code == 403
     assert json_response["message"] == "Not enough permissions"
+
+
+@pytest.mark.usefixtures("create_user_account", "test_client")
+def test_user_role_is_accepted(create_user_account, test_client):
+    response = _post_do_something_for_account(create_user_account, test_client)
+
+    assert response.status_code == 202
+
+
+@pytest.mark.usefixtures("create_admin_account", "test_client")
+def test_user_admin_is_accepted(create_admin_account, test_client):
+    response = _post_do_something_for_account(create_admin_account, test_client)
+
+    assert response.status_code == 202

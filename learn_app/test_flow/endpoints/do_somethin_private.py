@@ -1,9 +1,12 @@
-from datetime import datetime
+import random
+from datetime import datetime, timedelta
 
 from flask import json, request
 
 from learn_app.main import app, db
+from learn_app.test_flow.endpoints.delay import calculate_current_delay
 from learn_app.test_flow.models.account import Account
+from learn_app.test_flow.models.delay import Delay
 from learn_app.test_flow.models.do_something import DoSomething
 
 
@@ -78,10 +81,17 @@ def _respond_do_something_successfully(account):
 
 
 def _save_do_something_to_db(account):
-    do_something = DoSomething(by_name=account.name, by_time=datetime.utcnow())
+    delay_time_delta = _calculate_delay_time_delta()
+    do_something = DoSomething(by_name=account.name, by_time=datetime.utcnow() + delay_time_delta)
     db.session.add(do_something)
     db.session.commit()
     return do_something.id
+
+
+def _calculate_delay_time_delta():
+    current_delay = calculate_current_delay()
+    delay_seconds = random.randint(1, current_delay["max_delay"])
+    return timedelta(seconds=delay_seconds)
 
 
 def _respond_not_enough_permissions():

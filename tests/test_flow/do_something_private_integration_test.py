@@ -141,7 +141,7 @@ def _calculate_time_delta_between_now_and_db_record(create_admin_account, test_c
     json_response, process_id = _make_json_response_and_process_id_from_post(create_admin_account,
                                                                              test_client)
     db_datetime = _query_by_time_from_db(process_id)
-    return test_datetime - db_datetime
+    return db_datetime - test_datetime
 
 
 def _query_by_time_from_db(process_id):

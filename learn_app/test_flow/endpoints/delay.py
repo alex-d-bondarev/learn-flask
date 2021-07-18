@@ -10,17 +10,16 @@ def get_delay():
 
     :return:
     """
-    default_delay = _make_default_delay_dict()
-
     if request.method == "GET":
-        return _get_delay(default_delay)
+        return _get_delay()
     else:
-        return _put_delay(default_delay)
+        return _put_delay()
 
 
-def _put_delay(default_delay):
-    _update_default_delay_based_on_request(default_delay)
-    _save_delay_to_db(default_delay)
+def _put_delay():
+    delay_dict = _make_default_delay_dict()
+    _update_default_delay_based_on_request(delay_dict)
+    _save_delay_to_db(delay_dict)
     return app.response_class(status=204)
 
 
@@ -45,11 +44,21 @@ def _save_delay_to_db(default_delay):
     db.session.commit()
 
 
-def _get_delay(default_delay):
-    db_delay = Delay.query.first()
-    result_delay = _prepare_result_delay(db_delay, default_delay)
+def _get_delay():
+    result_delay = calculate_current_delay()
     json_body = json.dumps(result_delay)
     return app.response_class(response=json_body, status=200)
+
+
+def calculate_current_delay():
+    """Calculate current delay based on DB records and default behavior
+
+    :return:
+    """
+    delay_dict = _make_default_delay_dict()
+    db_delay = Delay.query.first()
+    result_delay = _prepare_result_delay(db_delay, delay_dict)
+    return result_delay
 
 
 def _prepare_result_delay(db_delay, default_delay):

@@ -39,6 +39,11 @@ def test_post_do_something_private_needs_user(test_client):
     assert json_response["message"] == "User Not Found"
 
 
-@pytest.mark.usefixtures("create_none_account")
-def test_account_exists_but_none_role_is_forbidden(create_none_account):
-    pass
+@pytest.mark.usefixtures("create_none_account", "test_client")
+def test_account_exists_but_none_role_is_forbidden(create_none_account, test_client):
+    do_something_data = {"by_name": create_none_account.name}
+    response = test_client.post("/do_something_private", data=do_something_data)
+    json_response = json.loads(response.data)
+
+    assert response.status_code == 403
+    assert json_response["message"] == "Not enough permissions"

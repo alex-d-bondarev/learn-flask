@@ -56,7 +56,9 @@ Run python black, isort and flake8 in order to improve code style:
 make code_style
 ```
 
-## Test
+## Test 
+
+### All
 
 1. Start DB `docker-compose up -d`
 1. Run tests:
@@ -67,5 +69,18 @@ make code_style
    make coverage_test 
    # Fail when coverage is bellow 100%
    make strict_test 
+   ```
+1. Stop DB `docker-compose down`
+
+### Specific test
+
+1. Start DB `docker-compose up -d`
+1. Run test:
+   export PYTHONPATH=`pwd`
+   ```bash
+   # trigger test via path to test file and method name 
+   # pytest <test_file_path>::<method_name>
+   # For example:
+   pytest ./tests/test_flow/do_something_private_integration_test.py::test_post_do_something_private_needs_user
    ```
 1. Stop DB `docker-compose down`

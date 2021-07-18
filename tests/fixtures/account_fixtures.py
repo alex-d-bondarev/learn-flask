@@ -2,6 +2,12 @@ import pytest
 
 from learn_app.test_flow.models.account import Account
 
+NONE_ACCOUNT = Account(
+    name="Mr. None",
+    number=000,
+    role="none",
+)
+
 
 @pytest.fixture(scope="session")
 def test_account_data():
@@ -32,11 +38,12 @@ def test_account(test_account_data):
 
 
 @pytest.fixture(scope="function")
-@pytest.mark.usefixtures("db_fixture", "test_account")
-def create_none_account(db_fixture, test_account):
+@pytest.mark.usefixtures("db_fixture")
+def create_none_account(db_fixture):
     """Create Account with 'none' role"""
-    db_fixture.session.add(test_account)
+    db_fixture.session.add(NONE_ACCOUNT)
     db_fixture.session.commit()
+    return NONE_ACCOUNT
 
 
 @pytest.fixture(scope="function", autouse=True)

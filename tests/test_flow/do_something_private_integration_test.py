@@ -1,9 +1,16 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import pytest
 from flask import json
 
 from learn_app.test_flow.models.do_something import DoSomething
+
+
+def _make_json_response_and_process_id_from_post(create_admin_account, test_client):
+    response = _post_do_something_for_account(create_admin_account, test_client)
+    json_response = json.loads(response.data)
+    process_id = json_response["process_id"]
+    return json_response, process_id
 
 
 def _post_do_something_for_account(account, test_client):
@@ -80,10 +87,10 @@ def test_do_something_is_saved_to_db(create_admin_account, test_client):
 
 @pytest.mark.usefixtures("create_admin_account", "test_client")
 def test_do_something_returns_id(create_admin_account, test_client):
-    response = _post_do_something_for_account(create_admin_account, test_client)
-    json_response = json.loads(response.data)
+    json_response, process_id = _make_json_response_and_process_id_from_post(create_admin_account,
+                                                                             test_client)
     db_do_something = DoSomething.query.filter_by(
-        id=json_response["process_id"]
+        id=process_id
     ).first()
 
     assert db_do_something is not None
@@ -101,10 +108,47 @@ def test_get_do_something_with_incorrect_id(test_client):
 
 @pytest.mark.usefixtures("create_admin_account", "test_client")
 def test_get_do_something_with_correct_id(create_admin_account, test_client):
-    post_response = _post_do_something_for_account(create_admin_account, test_client)
-    json_response = json.loads(post_response.data)
+    json_response, process_id = _make_json_response_and_process_id_from_post(create_admin_account,
+                                                                             test_client)
     get_response = test_client.get(
-        f'/do_something_private/{json_response["process_id"]}'
+        f'/do_something_private/{process_id}'
     )
 
     assert get_response.status_code == 200
+
+
+@pytest.mark.usefixtures("create_admin_account", "test_client")
+def test_do_something_has_different_delta_for_default(create_admin_account, test_client):
+    one_second = timedelta(seconds=1)
+
+    time_delta_1 = _calculate_time_delta_between_now_and_db_record(
+        create_admin_account,
+        test_client)
+    time_delta_2 = _calculate_time_delta_between_now_and_db_record(
+        create_admin_account,
+        test_client)
+    time_delta_3 = _calculate_time_delta_between_now_and_db_record(
+        create_admin_account,
+        test_client)
+
+    assert time_delta_1 > one_second \
+           or time_delta_1 > one_second \
+           or time_delta_3 > one_second
+
+
+def _calculate_time_delta_between_now_and_db_record(create_admin_account, test_client):
+    test_datetime = _make_utc_datetime_now_without_milliseconds()
+    json_response, process_id = _make_json_response_and_process_id_from_post(create_admin_account,
+                                                                             test_client)
+    db_datetime = _query_by_time_from_db(process_id)
+    return test_datetime - db_datetime
+
+
+def _query_by_time_from_db(process_id):
+    db_do_something = DoSomething.query.filter_by(id=process_id).first()
+    db_datetime = db_do_something.by_time
+    return db_datetime
+
+
+def _make_utc_datetime_now_without_milliseconds():
+    return datetime.utcnow().replace(microsecond=0)

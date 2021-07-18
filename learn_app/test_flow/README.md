@@ -19,19 +19,19 @@ Need to implement some generic functionality for test demo purposes. This functi
         1. _No input parameters are required._
         1. _A full response is returned immediately._
     1. _Create `do_something_private` endpoint:_ :hourglass_flowing_sand:
-        1. _It can be used only by users and admins._ :hourglass_flowing_sand:
-        1. _Account id parameter as input._
-        1. _A short response with response ID is returned immediately._
+        1. It can be used only by users and admins. :white_check_mark:
+        1. Account name parameter as input. :white_check_mark:
+        1. A short response with response ID is returned immediately. :white_check_mark:
         1. _A full response with 'processing delay' is returned, when additional response ID is
-           provided._
+           provided._ :hourglass_flowing_sand:
     1. _Create `do_something_admin` endpoint:_
         1. _Same as `do_something_private` but only for admins_
 1. _Simulate CRUD for processing delays_ :hourglass_flowing_sand:
     1. _Simulate processing delays by adding delays to endpoints_
         1. Add max_delay value :white_check_mark:
-        1. Add random delay True|False :white_check_mark:
-            1. _If random delay is between 0 and max_delay_ :hourglass_flowing_sand:
-            1. _Else delay is max_delay_ :hourglass_flowing_sand:
+        1. _Add random delay True|False_
+            1. _If random delay is between 0 and max_delay_
+            1. _Else delay is max_delay_
 1. Use TDD :stuck_out_tongue_winking_eye:
 1. Update this README to show progress:
     1. _Italics_ = TBD

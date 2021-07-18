@@ -3,7 +3,7 @@ from flask import json
 
 from learn_app.test_flow.models.delay import Delay
 
-DEFAULT_MAX_DELAY = 3000
+DEFAULT_MAX_DELAY = 3
 DEFAULT_RANDOM = True
 
 

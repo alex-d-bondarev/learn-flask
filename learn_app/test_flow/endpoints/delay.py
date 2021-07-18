@@ -64,7 +64,7 @@ def _prepare_result_delay(db_delay, default_delay):
 
 def _make_default_delay_dict():
     default_delay = {
-        "max_delay": 3000,
+        "max_delay": 3,
         "random": True,
     }
     return default_delay

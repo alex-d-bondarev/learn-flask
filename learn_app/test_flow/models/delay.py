@@ -10,8 +10,9 @@ class Delay(db.Model):
 
     id = db.Column(name="id", type_=db.Integer, primary_key=True, autoincrement=True)
 
+    # in seconds
     max_delay = db.Column(
-        name="max_delay", type_=db.Integer, unique=False, nullable=False
+        name="max_delay", type_=db.Integer, unique=False, nullable=False, default=3
     )
 
     random = db.Column(

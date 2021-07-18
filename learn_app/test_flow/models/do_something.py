@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from sqlalchemy import DateTime
 
 from learn_app import db
@@ -15,7 +17,7 @@ class DoSomething(db.Model):
     )
 
     by_time = db.Column(
-        name="by_time", type_=DateTime, unique=False, nullable=False, default=False
+        name="by_time", type_=DateTime, unique=False, nullable=False, default=datetime.utcnow()
     )
 
     def __init__(self, by_name, by_time):

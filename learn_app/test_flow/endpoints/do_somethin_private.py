@@ -18,11 +18,18 @@ def get_do_something_private(id):
     if db_do_something is None:
         return _respond_get_not_found()
     else:
-        return _respond_get_found()
+        return _respond_get_found(db_do_something)
 
 
-def _respond_get_found():
-    return app.response_class(status=200)
+def _respond_get_found(db_do_something):
+    json_response = _prepare_do_something_details_json(db_do_something)
+    return app.response_class(response=json_response, status=200)
+
+
+def _prepare_do_something_details_json(db_do_something):
+    response = {"by_time": db_do_something.by_time}
+    json_response = json.dumps(response)
+    return json_response
 
 
 def _respond_get_not_found():

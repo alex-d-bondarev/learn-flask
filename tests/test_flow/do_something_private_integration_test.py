@@ -6,6 +6,15 @@ from flask import json
 from learn_app.test_flow.models.do_something import DoSomething
 
 
+def _calculate_time_delta_between_now_and_db_record(create_admin_account, test_client):
+    test_datetime = _make_utc_datetime_now_without_milliseconds()
+    json_response, process_id = _make_json_response_and_process_id_from_post(
+        create_admin_account, test_client
+    )
+    db_datetime = _query_by_time_from_db(process_id)
+    return db_datetime - test_datetime
+
+
 def _make_json_response_and_process_id_from_post(create_admin_account, test_client):
     response = _post_do_something_for_account(create_admin_account, test_client)
     json_response = json.loads(response.data)
@@ -13,10 +22,20 @@ def _make_json_response_and_process_id_from_post(create_admin_account, test_clie
     return json_response, process_id
 
 
+def _make_utc_datetime_now_without_milliseconds():
+    return datetime.utcnow().replace(microsecond=0)
+
+
 def _post_do_something_for_account(account, test_client):
     do_something_data = {"by_name": account.name}
     response = test_client.post("/do_something_private", data=do_something_data)
     return response
+
+
+def _query_by_time_from_db(process_id):
+    db_do_something = DoSomething.query.filter_by(id=process_id).first()
+    db_datetime = db_do_something.by_time
+    return db_datetime
 
 
 def test_do_something_private_has_model():
@@ -136,22 +155,3 @@ def test_do_something_has_different_delta_for_default(
         or time_delta_2 > one_second
         or time_delta_3 > one_second
     )
-
-
-def _calculate_time_delta_between_now_and_db_record(create_admin_account, test_client):
-    test_datetime = _make_utc_datetime_now_without_milliseconds()
-    json_response, process_id = _make_json_response_and_process_id_from_post(
-        create_admin_account, test_client
-    )
-    db_datetime = _query_by_time_from_db(process_id)
-    return db_datetime - test_datetime
-
-
-def _query_by_time_from_db(process_id):
-    db_do_something = DoSomething.query.filter_by(id=process_id).first()
-    db_datetime = db_do_something.by_time
-    return db_datetime
-
-
-def _make_utc_datetime_now_without_milliseconds():
-    return datetime.utcnow().replace(microsecond=0)

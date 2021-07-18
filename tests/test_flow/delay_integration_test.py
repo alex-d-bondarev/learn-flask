@@ -1,4 +1,5 @@
 import pytest
+from flask import json
 
 from learn_app.test_flow.models.delay import Delay
 
@@ -22,9 +23,12 @@ def test_delay_api_exists(test_client):
     assert response.status_code == 200
 
 
-# @pytest.mark.usefixtures("test_client", "db_fixture")
-# def test_empty_delay_shows_random_3000(test_client, db_fixture):
-#     Delay.query.delete()
-#     db_fixture.session.commit()
-#     response = test_client.get("/delay")
+@pytest.mark.usefixtures("test_client", "db_fixture")
+def test_empty_delay_shows_random_3000(test_client, db_fixture):
+    Delay.query.delete()
+    db_fixture.session.commit()
+    response = test_client.get("/delay")
+    json_response = json.loads(response.data)
 
+    assert json_response["max_delay"] == 3000
+    assert json_response["random"]

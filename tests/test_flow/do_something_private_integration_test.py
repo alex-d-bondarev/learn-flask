@@ -17,3 +17,9 @@ def test_do_something_save_to_db(db_fixture):
     db_do_something = DoSomething.query.all()
 
     assert len(db_do_something) == 1
+
+
+@pytest.mark.usefixtures("test_client")
+def test_get_do_something_api_exists(test_client):
+    response = test_client.post("/do_something_private")
+    assert response.status_code == 400

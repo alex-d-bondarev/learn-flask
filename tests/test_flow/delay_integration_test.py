@@ -3,12 +3,20 @@ from flask import json
 
 from learn_app.test_flow.models.delay import Delay
 
+DEFAULT_MAX_DELAY = 3000
+DEFAULT_RANDOM = True
+
 
 def _delay_response_is_default(test_client):
+    json_response = _get_delay_as_json(test_client)
+    assert json_response["max_delay"] == DEFAULT_MAX_DELAY
+    assert json_response["random"] == DEFAULT_RANDOM
+
+
+def _get_delay_as_json(test_client):
     response = test_client.get("/delay")
     json_response = json.loads(response.data)
-    assert json_response["max_delay"] == 3000
-    assert json_response["random"]
+    return json_response
 
 
 def _delete_all_delays_from_db(db_fixture):
@@ -64,15 +72,27 @@ def test_delay_put_creates_default_db_record_if_no_parameters(test_client, db_fi
     _delay_response_is_default(test_client)
 
 
-# @pytest.mark.usefixtures("test_client", "db_fixture")
-# def test_delay_put_creates_default_db_record_if_no_parameters(test_client, db_fixture):
-#     delete_all_delays_from_db(db_fixture)
-#
-#     new_max_delay = 1000
-#     update_data = {"max_delay": new_max_delay}
-#     test_client.put("/delay", data=update_data)
-#     response = test_client.get("/delay")
-#     json_response = json.loads(response.data)
-#
-#     assert json_response["max_delay"] == new_max_delay
-#     assert json_response["random"]
+@pytest.mark.usefixtures("test_client", "db_fixture")
+def test_update_max_delay(test_client, db_fixture):
+    _delete_all_delays_from_db(db_fixture)
+
+    new_max_delay = 1000
+    update_data = {"max_delay": new_max_delay}
+    test_client.put("/delay", data=update_data)
+
+    json_response = _get_delay_as_json(test_client)
+    assert json_response["max_delay"] == new_max_delay
+    assert json_response["random"] == DEFAULT_RANDOM
+
+
+@pytest.mark.usefixtures("test_client", "db_fixture")
+def test_update_delay_random_value(test_client, db_fixture):
+    _delete_all_delays_from_db(db_fixture)
+
+    new_random = False
+    update_data = {"random": new_random}
+    test_client.put("/delay", data=update_data)
+
+    json_response = _get_delay_as_json(test_client)
+    assert json_response["max_delay"] == DEFAULT_MAX_DELAY
+    assert json_response["random"] == new_random

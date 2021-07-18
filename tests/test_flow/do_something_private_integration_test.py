@@ -37,3 +37,8 @@ def test_post_do_something_private_needs_user(test_client):
 
     assert response.status_code == 404
     assert json_response["message"] == "User Not Found"
+
+
+@pytest.mark.usefixtures("create_none_account")
+def test_account_exists_but_none_role_is_forbidden(create_none_account):
+    pass

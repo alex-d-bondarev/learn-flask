@@ -31,6 +31,14 @@ def test_account(test_account_data):
     )
 
 
+@pytest.fixture(scope="function")
+@pytest.mark.usefixtures("db_fixture", "test_account")
+def create_none_account(db_fixture, test_account):
+    """Create Account with 'none' role"""
+    db_fixture.session.add(test_account)
+    db_fixture.session.commit()
+
+
 @pytest.fixture(scope="function", autouse=True)
 @pytest.mark.usefixtures("db_fixture")
 def cleanup_test_account(db_fixture):

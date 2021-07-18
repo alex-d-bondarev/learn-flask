@@ -1,7 +1,10 @@
+from datetime import datetime
+
 from flask import json, request
 
-from learn_app.main import app
+from learn_app.main import app, db
 from learn_app.test_flow.models.account import Account
+from learn_app.test_flow.models.do_something import DoSomething
 
 
 @app.route("/do_something_private", methods=["POST"])
@@ -23,14 +26,25 @@ def _respond_with_by_name(name):
     if account is None:
         return _respond_account_not_found()
     else:
-        return _respond_user_found(account)
+        return _respond_account_found(account)
 
 
-def _respond_user_found(account):
+def _respond_account_found(account):
     if account.role in ["admin", "user"]:
-        return app.response_class(status=202)
+        return _respond_do_something_successfully(account)
     else:
         return _respond_not_enough_permissions()
+
+
+def _respond_do_something_successfully(account):
+    _save_do_something_to_db(account)
+    return app.response_class(status=202)
+
+
+def _save_do_something_to_db(account):
+    do_something = DoSomething(by_name=account.name, by_time=datetime.utcnow())
+    db.session.add(do_something)
+    db.session.commit()
 
 
 def _respond_not_enough_permissions():

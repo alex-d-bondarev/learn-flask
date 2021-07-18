@@ -66,3 +66,11 @@ def test_user_admin_is_accepted(create_admin_account, test_client):
     response = _post_do_something_for_account(create_admin_account, test_client)
 
     assert response.status_code == 202
+
+
+@pytest.mark.usefixtures("create_admin_account", "test_client")
+def test_do_something_is_saved_to_db(create_admin_account, test_client):
+    _post_do_something_for_account(create_admin_account, test_client)
+    db_do_something = DoSomething.query.filter_by(by_name=create_admin_account.name).first()
+
+    assert db_do_something is not None

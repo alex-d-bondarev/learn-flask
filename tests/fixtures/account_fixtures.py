@@ -2,23 +2,11 @@ import pytest
 
 from learn_app.test_flow.models.account import Account
 
-NONE_ACCOUNT = Account(
-    name="Mr. None",
-    number=000,
-    role="none",
-)
 
-USER_ACCOUNT = Account(
-    name="Mr. User",
-    number=444,
-    role="user",
-)
-
-ADMIN_ACCOUNT = Account(
-    name="Mr. Admin",
-    number=777,
-    role="admin",
-)
+def _save_account_to_db_and_return_its_model(db_fixture, none_account):
+    db_fixture.session.add(none_account)
+    db_fixture.session.commit()
+    return none_account
 
 
 @pytest.fixture(scope="session")
@@ -53,27 +41,36 @@ def test_account(test_account_data):
 @pytest.mark.usefixtures("db_fixture")
 def create_none_account(db_fixture):
     """Create Account with 'none' role"""
-    db_fixture.session.add(NONE_ACCOUNT)
-    db_fixture.session.commit()
-    return NONE_ACCOUNT
+    none_account = Account(
+        name="Mr. None",
+        number=000,
+        role="none",
+    )
+    return _save_account_to_db_and_return_its_model(db_fixture, none_account)
 
 
 @pytest.fixture(scope="function")
 @pytest.mark.usefixtures("db_fixture")
 def create_user_account(db_fixture):
     """Create Account with 'none' role"""
-    db_fixture.session.add(USER_ACCOUNT)
-    db_fixture.session.commit()
-    return USER_ACCOUNT
+    user_account = Account(
+        name="Mr. User",
+        number=444,
+        role="user",
+    )
+    return _save_account_to_db_and_return_its_model(db_fixture, user_account)
 
 
 @pytest.fixture(scope="function")
 @pytest.mark.usefixtures("db_fixture")
 def create_admin_account(db_fixture):
     """Create Account with 'none' role"""
-    db_fixture.session.add(ADMIN_ACCOUNT)
-    db_fixture.session.commit()
-    return ADMIN_ACCOUNT
+    admin_account = Account(
+        name="Mr. Admin",
+        number=777,
+        role="admin",
+    )
+    return _save_account_to_db_and_return_its_model(db_fixture, admin_account)
 
 
 @pytest.fixture(scope="function", autouse=True)

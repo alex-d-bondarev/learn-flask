@@ -16,9 +16,15 @@ def test_delay_is_saved_to_db(db_fixture, test_delay):
     assert len(db_delay) == 1
 
 
-@pytest.mark.usefixtures("test_client", "db_fixture")
-def test_delay_api_exists(test_client, db_fixture):
-    Delay.query.delete()
-    db_fixture.session.commit()
+@pytest.mark.usefixtures("test_client")
+def test_delay_api_exists(test_client):
     response = test_client.get("/delay")
     assert response.status_code == 200
+
+
+# @pytest.mark.usefixtures("test_client", "db_fixture")
+# def test_empty_delay_shows_random_3000(test_client, db_fixture):
+#     Delay.query.delete()
+#     db_fixture.session.commit()
+#     response = test_client.get("/delay")
+

@@ -29,7 +29,7 @@ def _respond_get_found(db_do_something):
 
 
 def _prepare_do_something_details_json(db_do_something):
-    response = {"by_time": db_do_something.by_time}
+    response = {"by_time": db_do_something.by_time, "status": "processing"}
     json_response = json.dumps(response)
     return json_response
 

@@ -38,6 +38,12 @@ def _query_by_time_from_db(process_id):
     return db_datetime
 
 
+def _response_and_json_from_get_do_something(test_client, id):
+    response = test_client.get(f"/do_something_private/{id}")
+    json_response = json.loads(response.data)
+    return json_response, response
+
+
 def test_do_something_private_has_model():
     DoSomething(by_name="no one", by_time=datetime.utcnow())
 
@@ -117,8 +123,7 @@ def test_do_something_returns_id(create_admin_account, test_client):
 
 @pytest.mark.usefixtures("test_client")
 def test_get_do_something_with_incorrect_id(test_client):
-    response = test_client.get("/do_something_private/0")
-    json_response = json.loads(response.data)
+    json_response, response = _response_and_json_from_get_do_something(test_client, 0)
 
     assert response.status_code == 404
     assert json_response["message"] == "Process Not Found"
@@ -129,9 +134,9 @@ def test_get_do_something_with_correct_id(create_admin_account, test_client):
     json_response, process_id = _make_json_response_and_process_id_from_post(
         create_admin_account, test_client
     )
-    get_response = test_client.get(f"/do_something_private/{process_id}")
+    _, response = _response_and_json_from_get_do_something(test_client, process_id)
 
-    assert get_response.status_code == 200
+    assert response.status_code == 200
 
 
 @pytest.mark.usefixtures("create_admin_account", "test_client")
@@ -155,3 +160,20 @@ def test_do_something_has_different_delta_for_default(
         or time_delta_2 > one_second
         or time_delta_3 > one_second
     )
+
+
+@pytest.mark.usefixtures("db_fixture", "test_client")
+def test_do_something_is_still_processing_when_future_by_time(db_fixture, test_client):
+    one_hour = timedelta(seconds=3600)
+
+    do_something = DoSomething(
+        by_name="Mr Hacker", by_time=datetime.utcnow() + one_hour
+    )
+    db_fixture.session.add(do_something)
+    db_fixture.session.commit()
+
+    json_response, _ = _response_and_json_from_get_do_something(
+        test_client, do_something.id
+    )
+
+    assert json_response["status"] == "processing"
